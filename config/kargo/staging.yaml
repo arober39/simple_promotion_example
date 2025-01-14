@@ -1,4 +1,3 @@
-# config/kargo/staging.yaml
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
