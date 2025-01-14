@@ -27,7 +27,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/myorg/monorepo
+        repoURL: https://github.com/arober39/simple_promotion_example.git
         targetRevision: '{{freight.revision}}'
         path: charts/myapp
         helm:
