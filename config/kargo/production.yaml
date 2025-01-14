@@ -1,0 +1,26 @@
+# config/kargo/production.yaml
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: production
+  namespace: default
+spec:
+  promotionMechanics:
+    type: PromoteOnce
+    gates:
+      - name: production-approval
+        type: Manual
+  subscriptions:
+    - alias: myapp
+      source:
+        stage: staging
+        freight: myapp
+  verification:
+    queries:
+      - name: health-check
+        interval: 30s
+        successThreshold: 3
+        provider:
+          http:
+            url: http://myapp.com/health
+            method: GET

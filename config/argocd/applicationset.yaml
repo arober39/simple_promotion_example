@@ -1,0 +1,45 @@
+# config/argocd/applicationset.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: myapp
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - environment: staging
+                  namespace: staging
+                  valueFile: environments/staging/values.yaml
+                - environment: production
+                  namespace: production
+                  valueFile: environments/production/values.yaml
+          - kargo:
+              stage:
+                name: staging
+                namespace: default
+              freight: myapp
+  template:
+    metadata:
+      name: 'myapp-{{environment}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/myorg/monorepo
+        targetRevision: '{{freight.revision}}'
+        path: charts/myapp
+        helm:
+          valueFiles:
+            - '{{valueFile}}'
+          values: |
+            image:
+              tag: '{{freight.artifacts.container.digest}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

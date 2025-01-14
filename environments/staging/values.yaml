@@ -1,0 +1,7 @@
+# environments/staging/values.yaml
+environment: staging
+replicaCount: 2
+image:
+  pullPolicy: Always
+ingress:
+  host: staging.myapp.com

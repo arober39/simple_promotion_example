@@ -1,0 +1,7 @@
+# environments/production/values.yaml
+environment: production
+replicaCount: 4
+image:
+  pullPolicy: IfNotPresent
+ingress:
+  host: myapp.com

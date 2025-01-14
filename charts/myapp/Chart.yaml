@@ -1,0 +1,5 @@
+# charts/myapp/Chart.yaml
+apiVersion: v2
+name: myapp
+version: 1.0.0
+description: A simple application deployment

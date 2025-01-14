@@ -1,0 +1,24 @@
+# config/kargo/staging.yaml
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: staging
+  namespace: default
+spec:
+  promotionMechanics:
+    type: PromoteOnce
+  subscriptions:
+    - alias: myapp
+      source:
+        repoURL: https://github.com/myorg/monorepo
+        targetRevision: HEAD
+        path: environments/staging
+  verification:
+    queries:
+      - name: health-check
+        interval: 30s
+        successThreshold: 3
+        provider:
+          http:
+            url: http://staging.myapp.com/health
+            method: GET
